@@ -13,13 +13,11 @@ fn main() {
 
     let mut text = Vec::new();
 
-    write!(stdout, "{}{}q to exit. Type stuff, use alt, and so on.{}",
+    write!(stdout, "{}{}q to exit. Type stuff, use alt, and so on.",
            // Clear the screen.
            termion::clear::All,
            // Goto (1,1).
-           termion::cursor::Goto(1, 1),
-           // Hide the cursor.
-           termion::cursor::Hide).unwrap();
+           termion::cursor::Goto(1, 1)).unwrap();
     // Flush stdout (i.e. make the output appear).
     stdout.flush().unwrap();
 
@@ -30,8 +28,12 @@ fn main() {
         // Print the key we type...
         match c.unwrap() {
             // Exit.
-            Key::Char('q') => break,
+            Key::Ctrl(c)   => break,
             Key::Char(c)   => text.push(c),
+            Key::Backspace => {
+                text.pop();
+                ()
+            },
             _              => ()
         }
 
